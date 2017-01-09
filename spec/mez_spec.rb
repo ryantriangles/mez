@@ -6,6 +6,7 @@ describe Mez do
     expect(Mez.humanise(4500)).to eq('4,500')
     expect(Mez.humanise(-4500)).to eq('-4,500')
     expect(Mez.humanise(-40_500)).to eq('-40,500')
+    expect(Mez.humanise(-555_063_103)).to eq('-556')
     expect(Mez.humanise(100_000)).to eq('100,000')
     expect(Mez.humanise(-4_201_241_000)).to eq('-4,201,241,000')
     expect(Mez.humanise(4_201_241_000)).to eq('4,201,241,000')
@@ -18,6 +19,7 @@ describe Mez do
   it 'formats the change figures consistently' do
     expect(Mez.difference_report(0)).to eq('')
     expect(Mez.difference_report(1_000_000)).to eq('+1')
+    expect(Mez.difference_report(-556_000_000)).to eq('-556')
     expect(Mez.difference_report(5_000_000)).to eq('+5')
     expect(Mez.difference_report(500_000_000)).to eq('+500')
     expect(Mez.difference_report(8_500_000_000)).to eq('+8,500')
