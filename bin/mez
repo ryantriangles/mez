@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require 'mez'
+
+unless File.exist?(File.join(Mez::APP_DIR, 'folders.json'))
+  os_prefix = OS.windows? ? 'c:/files/' : '~/'
+  puts 'You are missing your configuration file!'
+  puts "It should be at #{Mez::CONFIG}, and should look like this:
+
+        {
+            \"projects\": [
+                \"#{os_prefix}work projects\",
+                \"#{os_prefix}personal projects\" ],
+            \"books\": [
+                \"#{os_prefix}fiction\",
+                \"#{os_prefix}nonfiction\" ]
+        }"
+  exit
+end
+
+total_size = 0
+total_difference = 0
+
+Mez.intro_line
+JSON.parse(File.read(Mez::CONFIG)).each do |name, folderset|
+  size = Mez.setsize(folderset)
+  Mez.update(name, size)
+  total_size += size
+  yesterday = Mez.yesterday_size(name)
+  difference = yesterday ? size - yesterday : 0
+  total_difference += difference
+  Mez.report(name, size, difference)
+end
+Mez.closing_line(total_size, total_difference)
